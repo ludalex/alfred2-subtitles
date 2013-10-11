@@ -1,7 +1,7 @@
 alfred2-subtitles
 =================
 
-Download subtitles of current playing TV Show from addic7ed.com
+An Alfred2 workflow to search & download TV Show Epsiodes subtitles from addic7ed.com automatically.
 
 Works with:
 - VLC

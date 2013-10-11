@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>LDX-69-EHUEH</string>
+	<key>connections</key>
+	<dict>
+		<key>9B43E2AB-EF1C-43CB-A3CD-E3B76FC92FDE</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>3751F789-05AD-4E30-87D4-CA67A6F7A329</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>D3F1B451-972D-4240-ACFC-2A10D3A8C1E7</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>ludalex</string>
+	<key>description</key>
+	<string>Download subtitles of current playing TV Show on addic7ed.com</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>Subtitles</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>lastpathcomponent</key>
+				<false/>
+				<key>onlyshowifquerypopulated</key>
+				<true/>
+				<key>output</key>
+				<integer>0</integer>
+				<key>removeextension</key>
+				<false/>
+				<key>sticky</key>
+				<false/>
+				<key>text</key>
+				<string>URL: {query}</string>
+				<key>title</key>
+				<string>Downloading subtitle</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.notification</string>
+			<key>uid</key>
+			<string>3751F789-05AD-4E30-87D4-CA67A6F7A329</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>escaping</key>
+				<integer>36</integer>
+				<key>keyword</key>
+				<string>subget</string>
+				<key>runningsubtext</key>
+				<string>Searching for current video..</string>
+				<key>script</key>
+				<string>require_once('search.php');</string>
+				<key>subtext</key>
+				<string>Download subtitles of current playing TV Show on addic7ed.com</string>
+				<key>title</key>
+				<string>Subtitles Downloader</string>
+				<key>type</key>
+				<integer>1</integer>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>9B43E2AB-EF1C-43CB-A3CD-E3B76FC92FDE</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>script</key>
+				<string>$query = "{query}";
+
+$query = explode("|", $query);
+
+$fileName = $query[3];
+$link = $query[2];
+$releaser = $query[1];
+$app = $query[0];
+
+include("simple_html_dom.php");
+include("workflows.php");
+
+error_reporting(E_ERROR);
+
+$w = new Workflows();
+$home = $w-&gt;home();
+
+
+$dl_locale   = $home . '/Downloads/' . $fileName . '.srt';
+$file        = fopen($dl_locale, 'w');
+$ch          = curl_init();
+curl_setopt($ch, CURLOPT_URL, $link);
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_REFERER, $link);
+curl_setopt($ch, CURLOPT_FILE, $file);
+curl_exec($ch);
+curl_close($ch);
+fclose($file);
+
+
+exec("osascript -e 'tell application \"$app\" to open \"$dl_locale\"'");</string>
+				<key>type</key>
+				<integer>1</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.script</string>
+			<key>uid</key>
+			<string>D3F1B451-972D-4240-ACFC-2A10D3A8C1E7</string>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string>Download subtitles of current playing TV Show from addic7ed.com
+
+Works with:
+
+    VLC
+    MPlayerX</string>
+	<key>uidata</key>
+	<dict>
+		<key>3751F789-05AD-4E30-87D4-CA67A6F7A329</key>
+		<dict>
+			<key>ypos</key>
+			<real>90</real>
+		</dict>
+		<key>9B43E2AB-EF1C-43CB-A3CD-E3B76FC92FDE</key>
+		<dict>
+			<key>ypos</key>
+			<real>170</real>
+		</dict>
+		<key>D3F1B451-972D-4240-ACFC-2A10D3A8C1E7</key>
+		<dict>
+			<key>ypos</key>
+			<real>230</real>
+		</dict>
+	</dict>
+	<key>webaddress</key>
+	<string>https://github.com/ludalex</string>
+</dict>
+</plist>

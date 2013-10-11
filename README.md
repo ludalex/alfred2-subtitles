@@ -12,7 +12,7 @@ Works with:
 1. Install the workflow
 2. Play a TV Show episode 
 3. Open Alfred and write "subget"
-4. Choose your preferred language/release and select it to download and open it automatically.
+4. Choose your preferred language/release and select it to download and open automatically.
 5. ???
 6. Profit.
 

@@ -7,15 +7,16 @@ Works with:
 - VLC
 - MPlayerX
 
-#Instructions
+##Instructions
 
 1. Install the workflow
 2. Play a TV Show episode 
-3. Open Alfred and write "getsub"
+3. Open Alfred and write "subget"
 4. Choose your preferred language/release and select it to download and open it automatically.
-5. 
+5. ???
+6. Profit.
 
-#Screenshots
+##Screenshots
 
 ![Screenshot 1](http://i.imgur.com/a5GP8k7.png)
 ![Screenshot 2](http://i.imgur.com/LMSNHth.png)

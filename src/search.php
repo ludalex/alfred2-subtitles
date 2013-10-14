@@ -53,27 +53,57 @@ if($fp = fsockopen($host,$port,$errCode,$errStr,$waitTimeoutInSeconds))
         $app = "VLC";
       }
 
+      // Serie: array(4) {
+      //   [0]=>
+      //   string(8) "Homeland"
+      //   [1]=>
+      //   string(6) "S03E03"
+      //   [2]=>
+      //   string(4) "HDTV"
+      //   [3]=>
+      //   string(9) "x264-ASAP"
 
       // // exec("osascript -e 'set the clipboard to \"asdasdciao\"' ");
       $preliminary = $res;
       $fileName = str_replace(" ", "_", $res);
       // $friendly_query = str_replace("search", replace, subject)
 
-      preg_match('/^\D*(?=\d)/', $preliminary, $m);
-      $firstNumberPos =  strlen($m[0]);
-      if (!is_numeric( $preliminary[$firstNumberPos+1] )) $preliminary[$firstNumberPos-1] = "0";
+      if( stristr($preliminary, ".S") || stristr($preliminary, ".s") ) // IT'S A FUCKING RELEASE NAME (I hope)
+      {
 
-      $preliminary = str_replace(".mp4", "", $preliminary);
-      $preliminary = str_replace(".avi", "", $preliminary);
-      $preliminary = str_replace(".mkv", "", $preliminary);
-      $preliminary = str_replace(".mkv", "", $preliminary);
-      $preliminary = str_replace("-", "", $preliminary);
+        $serie_s_e = explode(".", $preliminary);
+        $serie = $serie_s_e[0];
 
-      $query = utf8_encode(urlencode($preliminary));
+        $s_e = $serie_s_e[1];
+        $s_e = explode("E", $s_e);
+
+        $s = str_replace("S", "", $s_e[0]);
+        $e = $s_e[1];
+
+        $query =  utf8_encode(urlencode( $serie . ' ' . $s . 'x' . $e));
+
+      }
+      else // It's a clean name
+      {
+
+        preg_match('/^\D*(?=\d)/', $preliminary, $m);
+        $firstNumberPos =  strlen($m[0]);
+        if (!is_numeric( $preliminary[$firstNumberPos+1] )) $preliminary[$firstNumberPos-1] = "0";
+
+        $preliminary = str_replace(".mp4", "", $preliminary);
+        $preliminary = str_replace(".avi", "", $preliminary);
+        $preliminary = str_replace(".mkv", "", $preliminary);
+        $preliminary = str_replace(".mkv", "", $preliminary);
+        $preliminary = str_replace("-", "", $preliminary);
+
+        $query = utf8_encode(urlencode($preliminary));
+ 
+      }
+
       $url = "https://www.google.com/search?q=site%3Aaddic7ed.com+inurl%3Aserie+-inurl%3Aarchives+-inurl%3Ablog+$query";
 
 
-      //exec("osascript -e 'set the clipboard to \"".$url."\"' ");
+      exec("osascript -e 'set the clipboard to \"".$url."\"' ");
 
       $html1 = file_get_html( $url );
       $found = FALSE;

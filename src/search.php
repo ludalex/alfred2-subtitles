@@ -29,81 +29,92 @@ $waitTimeoutInSeconds = 5;
 if($fp = fsockopen($host,$port,$errCode,$errStr,$waitTimeoutInSeconds))
 {   
 
-      $res = exec('osascript -e "tell application \"VLC\" to name of current item"');
+      if(!$argv[1]) // Automatic search
+      {
 
-      if (!$res) { 
+        $res = exec('osascript -e "tell application \"VLC\" to name of current item"');
 
-        $script = "mplayerx.scpt";
-        $res = exec("osascript '$script' 2>&1", $output, $error);  
-        // echo "res: " . $res . "\n\n";
-        // echo "output: " . $output . "\n\n";
-        // echo "error: " . $error . "\n\n";
+        if (!$res) { 
 
-        if($res && !$error)
-          $app = "MPlayerX";
+          $script = "mplayerx.scpt";
+          $res = exec("osascript '$script' 2>&1", $output, $error);  
+          // echo "res: " . $res . "\n\n";
+          // echo "output: " . $output . "\n\n";
+          // echo "error: " . $error . "\n\n";
+
+          if($res && !$error)
+            $app = "MPlayerX";
+          else
+            {
+              $w->result( 'alfred', 'alfredapp', "Can't detect any active players.", "Video players supported: VLC, MPlayerX", 'fileicon:/Applications/Alfred.app', 'yes', 'Alfredapp' );
+              echo $w->toxml();
+              die();
+            }
+        }
         else
-          {
-            $w->result( 'alfred', 'alfredapp', "Can't detect any active players.", "Video players supported: VLC, MPlayerX", 'fileicon:/Applications/Alfred.app', 'yes', 'Alfredapp' );
-            echo $w->toxml();
-            die();
-          }
-      }
-      else
+        {
+          $app = "VLC";
+        }
+
+        // // exec("osascript -e 'set the clipboard to \"asdasdciao\"' ");
+        $preliminary = $res;
+        $fileName = str_replace(" ", "_", $res);
+
+        // $friendly_query = str_replace("search", replace, subject)
+
+        if( stristr($preliminary, ".S") || stristr($preliminary, ".s") ) // IT'S A FUCKING RELEASE NAME (I hope)
+        {
+
+          $serie_s_e = explode(".", $preliminary);
+          $serie = $serie_s_e[0];
+
+          $s_e = $serie_s_e[1];
+          $s_e = explode("E", $s_e);
+
+          $s = str_replace("S", "", $s_e[0]);
+          $e = $s_e[1];
+
+          $query =  utf8_encode(urlencode( $serie . ' ' . $s . 'x' . $e));
+
+        }
+        else // It's a clean name
+        {
+
+          preg_match('/^\D*(?=\d)/', $preliminary, $m);
+          $firstNumberPos =  strlen($m[0]);
+          if (!is_numeric( $preliminary[$firstNumberPos+1] )) $preliminary[$firstNumberPos-1] = "0";
+
+          $preliminary = str_replace(".mp4", "", $preliminary);
+          $preliminary = str_replace(".avi", "", $preliminary);
+          $preliminary = str_replace(".mkv", "", $preliminary);
+          $preliminary = str_replace(".mkv", "", $preliminary);
+          $preliminary = str_replace("-", "", $preliminary);
+
+          $query = utf8_encode(urlencode($preliminary));
+   
+        }
+
+      } // END Automatic search
+
+      else // Manual search
       {
-        $app = "VLC";
-      }
+          $serie = $argv[2];
+          $s_e = $argv[3];
 
-      // Serie: array(4) {
-      //   [0]=>
-      //   string(8) "Homeland"
-      //   [1]=>
-      //   string(6) "S03E03"
-      //   [2]=>
-      //   string(4) "HDTV"
-      //   [3]=>
-      //   string(9) "x264-ASAP"
 
-      // // exec("osascript -e 'set the clipboard to \"asdasdciao\"' ");
-      $preliminary = $res;
-      $fileName = str_replace(" ", "_", $res);
-      // $friendly_query = str_replace("search", replace, subject)
+          $query =  utf8_encode(urlencode( $serie . ' ' . $s_e));
 
-      if( stristr($preliminary, ".S") || stristr($preliminary, ".s") ) // IT'S A FUCKING RELEASE NAME (I hope)
-      {
+          $app = "VLC";
+          $fileName = str_replace(" ", "_", $serie.$s_e);
 
-        $serie_s_e = explode(".", $preliminary);
-        $serie = $serie_s_e[0];
+          //exec("osascript -e 'set the clipboard to \"".$serie."\"' ");
 
-        $s_e = $serie_s_e[1];
-        $s_e = explode("E", $s_e);
-
-        $s = str_replace("S", "", $s_e[0]);
-        $e = $s_e[1];
-
-        $query =  utf8_encode(urlencode( $serie . ' ' . $s . 'x' . $e));
-
-      }
-      else // It's a clean name
-      {
-
-        preg_match('/^\D*(?=\d)/', $preliminary, $m);
-        $firstNumberPos =  strlen($m[0]);
-        if (!is_numeric( $preliminary[$firstNumberPos+1] )) $preliminary[$firstNumberPos-1] = "0";
-
-        $preliminary = str_replace(".mp4", "", $preliminary);
-        $preliminary = str_replace(".avi", "", $preliminary);
-        $preliminary = str_replace(".mkv", "", $preliminary);
-        $preliminary = str_replace(".mkv", "", $preliminary);
-        $preliminary = str_replace("-", "", $preliminary);
-
-        $query = utf8_encode(urlencode($preliminary));
- 
       }
 
       $url = "https://www.google.com/search?q=site%3Aaddic7ed.com+inurl%3Aserie+-inurl%3Aarchives+-inurl%3Ablog+$query";
 
-
-      exec("osascript -e 'set the clipboard to \"".$url."\"' ");
+      //echo $url;
+      //exec("osascript -e 'set the clipboard to \"".$url."\"' ");
 
       $html1 = file_get_html( $url );
       $found = FALSE;
@@ -118,7 +129,7 @@ if($fp = fsockopen($host,$port,$errCode,$errStr,$waitTimeoutInSeconds))
       if(!$found) 
         $w->result( 'alfred', 'alfredapp', "No subtitles found (on Google).", "", 'fileicon:/Applications/Alfred.app', 'yes', 'Alfredapp' );
 
-      exec("osascript -e 'set the clipboard to \"".$url."\"' ");
+      //exec("osascript -e 'set the clipboard to \"".$url."\"' ");
 
       $html2 = file_get_html( $addic7ed_link );
 

@@ -6,6 +6,25 @@
 	<string>LDX-69-EHUEH</string>
 	<key>connections</key>
 	<dict>
+		<key>8B5A12E9-7117-42C2-B2A7-B637155B6AC5</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>3751F789-05AD-4E30-87D4-CA67A6F7A329</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>D3F1B451-972D-4240-ACFC-2A10D3A8C1E7</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
 		<key>9B43E2AB-EF1C-43CB-A3CD-E3B76FC92FDE</key>
 		<array>
 			<dict>
@@ -39,6 +58,33 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>escaping</key>
+				<integer>36</integer>
+				<key>keyword</key>
+				<string>subget</string>
+				<key>runningsubtext</key>
+				<string>Searching for current video..</string>
+				<key>script</key>
+				<string>require_once('search.php');</string>
+				<key>subtext</key>
+				<string>Download subtitles of current playing TV Show on addic7ed.com</string>
+				<key>title</key>
+				<string>Subtitles Downloader</string>
+				<key>type</key>
+				<integer>1</integer>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>9B43E2AB-EF1C-43CB-A3CD-E3B76FC92FDE</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
 				<key>lastpathcomponent</key>
 				<false/>
 				<key>onlyshowifquerypopulated</key>
@@ -63,28 +109,28 @@
 			<key>config</key>
 			<dict>
 				<key>argumenttype</key>
-				<integer>2</integer>
+				<integer>0</integer>
 				<key>escaping</key>
 				<integer>36</integer>
 				<key>keyword</key>
-				<string>subget</string>
+				<string>subgetm</string>
 				<key>runningsubtext</key>
-				<string>Searching for current video..</string>
+				<string>Type and search subtitles. Syntax: "subgetm ShowName 01x10" (01 = Season, 10 = Episode)</string>
 				<key>script</key>
-				<string>require_once('search.php');</string>
+				<string>php -f search.php -- manual "{query}"</string>
 				<key>subtext</key>
-				<string>Download subtitles of current playing TV Show on addic7ed.com</string>
+				<string>Type and search subtitles. Syntax: "subgetm ShowName 01x10" (01 = Season, 10 = Episode)</string>
 				<key>title</key>
-				<string>Subtitles Downloader</string>
+				<string>Subtitles Downloader (Manual)</string>
 				<key>type</key>
-				<integer>1</integer>
+				<integer>0</integer>
 				<key>withspace</key>
 				<false/>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.input.scriptfilter</string>
 			<key>uid</key>
-			<string>9B43E2AB-EF1C-43CB-A3CD-E3B76FC92FDE</string>
+			<string>8B5A12E9-7117-42C2-B2A7-B637155B6AC5</string>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -147,10 +193,15 @@ Works with:
 			<key>ypos</key>
 			<real>90</real>
 		</dict>
+		<key>8B5A12E9-7117-42C2-B2A7-B637155B6AC5</key>
+		<dict>
+			<key>ypos</key>
+			<real>230</real>
+		</dict>
 		<key>9B43E2AB-EF1C-43CB-A3CD-E3B76FC92FDE</key>
 		<dict>
 			<key>ypos</key>
-			<real>170</real>
+			<real>90</real>
 		</dict>
 		<key>D3F1B451-972D-4240-ACFC-2A10D3A8C1E7</key>
 		<dict>

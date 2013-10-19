@@ -7,6 +7,10 @@ Works with:
 - VLC
 - MPlayerX
 
+Recognized video filenames:
+- "ShowName - 00x00 - EpisodeName"
+- "ShowName.S00x00.*"
+
 ##Instructions
 
 1. Install the workflow
